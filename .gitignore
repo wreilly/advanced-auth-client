@@ -1,7 +1,9 @@
-/node_modules
-bundle.js
+node_modules/
+git/
+*~
 npm-debug.log
-
-# IntelliJ
-*.iml
-/.idea
+.DS_Store
+public/bundle.js
+bundle.js
+config/
+config.js
