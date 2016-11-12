@@ -39,6 +39,17 @@ class Signin extends Component {
     this.props.signinUser( { email, password } );
   }
 
+  renderAlert() {
+    if (this.props.errorMessage){
+      return (
+        <div className="alert alert-danger">
+          <strong>Oops.</strong>
+          {this.props.errorMessage}
+        </div>
+      )
+    }
+  }
+
   render() {
     const { handleSubmit } = this.props
 
@@ -55,10 +66,16 @@ class Signin extends Component {
           type="password"
           component={renderField}
         />
+      {this.renderAlert()}
         <button action="submit" className="btn btn-primary">Sign In!</button>
       </form>
     );
   }
+}
+
+
+function mapStateToProps(state) {
+  return { errorMessage: state.auth.error };
 }
 
 // ReduxForm v5 helper (includes connect helper)
@@ -76,4 +93,4 @@ Signin = reduxForm({
 })(Signin);
 
 // 2. Do the connect on it too`
-export default Signin = connect(null, actions)(Signin);
+export default Signin = connect(mapStateToProps, actions)(Signin);

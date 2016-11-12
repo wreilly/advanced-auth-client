@@ -1,5 +1,14 @@
 import axios from 'axios';
 
+// You can get history, but also change URL!
+import { browserHistory } from 'react-router';
+
+import {
+  AUTH_USER,
+  UNAUTH_USER,
+  AUTH_ERROR
+} from './types';
+
 const ROOT_API_URL = 'http://localhost:3090';
 
 /*
@@ -43,18 +52,51 @@ And on to ALL Reducers
     // ES6 Template String: `ticks`
     // ES6 cutesie short cutesie
     // { email: email, password: password }
-    axios.post(`${ROOT_API_URL}/signin`, { email, password });
+    // PROMISE!
+    axios.post(`${ROOT_API_URL}/signin`, { email, password })
+      .then( response => {
+        // 2. If okay, - we just successfully authenticated w. backend!
+        // - update state to AUTH:true
+        // REDUCER authReducer
+        // Send ACTION to dispatch ...
+        // from there headed to Reducers
+        dispatch( { type: AUTH_USER });
 
+        // - save JWT token for next requests
+        // LOCAL STORAGE
+        // available on window scope in JavaScript
+        localStorage.setItem('token', response.data.token)
+/*
+localStorage.getItem('token')
+"eyJ0eXAiOiJKV1QiLCJhbGciOiJIUzI1NiJ9.eyJzdWIiOiI1ODI0NWJkNWZlNmEzMDliMWQ0M2FiZGUiLCJpYXQiOjE0Nzg5NTg2NTEwMTN9.5bRgZcoO85-g8zq7M_4ZLLeGrEAGS_rk6p-HYE1Vpa4"
+*/
 
-    // 2. If okay,
-    // - update state to AUTH:true
-    // - save JWT token for next requests
-    // - redirect to /feature
+        // - redirect to /feature
+        // use React Router, a la 'SPA' (not a whole page refresh)
+        // PROGRAMMATIC NAVIGATION
+        // User clicks submit
+        // App waits for success response
+        // THEN we/app navigate them to ...
+        browserHistory.push('/feature');
 
-    // 3. If *not* okay
-    // - show error
+      })
+      .catch( () => {
+        // 3. If *not* okay
+        // - show error
+        // N.B. Here in signinUser we need to handle errors, but also we will need to do same in signupUser...
 
-
+        // So, instead of inline here generating the direct dispatch of an action, we will instead call an Action Creator (authError), right from here inside (this) Action Creator (signinUser)
+        dispatch(authError('Bad login info'));
+      });
   }
 
+}
+
+// ACTION CREATOR
+export function authError(error) {
+  console.log("WR__ 01 authError error: ", error);
+  return {
+    type: AUTH_ERROR,
+    payload: error
+  };
 }
