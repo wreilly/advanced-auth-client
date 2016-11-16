@@ -71,20 +71,26 @@ Or (same deal):
 */
   // handleFormSubmit ( { email, password, passwordConfirmation } ) {
   // handleFormSubmit ( values ) {
-  handleFormSubmit ( { email, password, passwordConfirmation } ) {
+
+  /* Gah.
+No need to pass that 'passwordConfirmation' to the back-end, friend: (the API doesn't know what to do with it)
+  */
+  // handleFormSubmit ( { email, password, passwordConfirmation } ) {
+  handleFormSubmit ( { email, password } ) {
 
     // The client-side validation on password match:
     // Hmm - client-side is in VALIDATE(), not here ...
+    // Yep - ReduxForm takes care of that FOR YOU ;o)
 
 // NO. No "values" nor "formProps". We have to spell out each form field.
     // console.log("WR__ SIGNUP 7766 handleFormSubmit(values) values: ", values);
-    console.log("WR__ SIGNUP 5544 handleFormSubmit(email, password, passwordConfirmation) values: ", email, password, passwordConfirmation);
+    console.log("WR__ SIGNUP 5544 handleFormSubmit(email, password) values: ", email, password);
 
 
     // server-side signup (with its own validation)
     // this.props.signupUser( { email, password} );
     // this.props.signupUser( values ); // ?
-    this.props.signupUser( { email, password, passwordConfirmation} );
+    this.props.signupUser( { email, password } );
   }
 
 
@@ -142,6 +148,28 @@ function validate(values) {
 
     // OUR Object to return:
     const errors = {};
+
+// EXERCISE FOR THE "READER"
+// MAP or FOREACH over the object for these 3 checks:
+
+    if (!values.email) {
+      errors.email = "Hey! What's your e-mail address?"
+    }
+
+    if (!values.password) {
+      errors.password = "Hey! No password, no ticky"
+    }
+
+    if (!values.passwordConfirmation) {
+      errors.passwordConfirmation = "Hey! Puhleeze do enter that password a second time. I know you can do it"
+    }
+
+    if ( values.password !== values.passwordConfirmation ){
+      errors.password = 'Password must match ye olde Password Confirmation, ya know';
+    }
+
+
+
 
     // default
     return errors;

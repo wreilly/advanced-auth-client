@@ -9,6 +9,8 @@ import {
   AUTH_ERROR
 } from './types';
 
+import lilInspector from '../lilInspector';
+
 const ROOT_API_URL = 'http://localhost:3090';
 
 /*
@@ -24,7 +26,10 @@ Basic assignment
 var o = {p: 42, q: true};
 var {p, q} = o;
 */
-// ACTION CREATOR
+
+
+// ***********************************
+// ACTION CREATOR   SIGN *IN*
 // ES6-y poo:
 export function signinUser( { email, password } ) {
 // Good old-fashioned ES5 ...
@@ -82,21 +87,29 @@ localStorage.getItem('token')
 
       })
       .catch( () => {
+      // .catch( (response) => { // << Didn't work; see below
         // 3. If *not* okay
         // - show error
         // N.B. Here in signinUser we need to handle errors, but also we will need to do same in signupUser...
 
         // So, instead of inline here generating the direct dispatch of an action, we will instead call an Action Creator (authError), right from here inside (this) Action Creator (signinUser)
+
         dispatch(authError('Bad login info'));
+        // dispatch(authError(response.data.error));
+        /* Hmm, above did not work, here in signin() anyway
+        bundle.js:39099 Uncaught (in promise) TypeError: Cannot read property 'error' of undefined(…)
+        */
       });
   }
 
 }
 
-// ACTION CREATOR
+
+// ***********************************
+// ACTION CREATOR   ERROR
 /* Interesting: Since this is used/called-from (only?) right here within this same file (?), I seem to be able to get away without "exporting" it.
 */
-function authError(error) { // <<<< NOT "EXPORT"
+function authError(error) { // <<<< DON'T  NEED TO "EXPORT"
 // export function authError(error) {
   console.log("WR__ 01 authError error (NOT EXPORTED): ", error);
   return {
@@ -105,7 +118,9 @@ function authError(error) { // <<<< NOT "EXPORT"
   };
 }
 
-// ACTION CREATOR
+
+// ***********************************
+// ACTION CREATOR SIGN *OUT*
 export function signoutUser () {
   // remove JWT token
   localStorage.removeItem('token');
@@ -116,8 +131,18 @@ export function signoutUser () {
   }
 }
 
-// ACTION CREATOR
-export function signupUser( { email, password, passwordConfirmation } ) {
+
+
+// ***********************************
+// ACTION CREATOR SIGN *UP*
+// export function signupUser( { email, password, passwordConfirmation } ) {
+export function signupUser( { email, password } ) {
+
+  /* Gah. (above)
+No need to pass that 'passwordConfirmation' to the back-end, friend: (the API doesn't know what to do with it)
+  */
+
+
 
 // ***** MULTI-PART ACTION CREATOR !
 /* Time to THUNK it up:
@@ -140,7 +165,8 @@ And on to ALL Reducers
     // http://localhost:3090
 
     // PROMISE!
-    axios.post(`${ROOT_API_URL}/signup`, { email, password, passwordConfirmation })
+    // axios.post(`${ROOT_API_URL}/signup`, { email, password, passwordConfirmation })
+    axios.post(`${ROOT_API_URL}/signup`, { email, password })
       .then( response => {
         // 2. If okay, - we just successfully signed up w. backend!
         /* Hmm, most systems, upon signup, make you signin.
@@ -164,13 +190,159 @@ localStorage.getItem('token')
         // - redirect to /feature = What you came for.
         browserHistory.push('/feature');
       })
-      .catch( () => {
+      // .catch( () => {
+// https://www.udemy.com/react-redux-tutorial/learn/v4/questions/1521726
+      // .catch( (response) => {
+      .catch( (error) => {
+
+
         // 3. If *not* okay
         // - show error
         // N.B. Here in signinUser we need to handle errors, but also we will need to do same in signupUser...
 
+
+/* In case you were wondering,
+what this response looks like coming from the SERVER:
+
+/Users/william.reilly/dev/JavaScript/React/Udemy-ADVANCED-React-Redux-Grider/04-auth-server/auth/server/controllers/authentication.js
+
+    // If a user with email does exist, return an error
+    if (existingUser) {
+      return res.status(422).send({ error: 'Email is in use' });
+    }
+
+    Not:              response.data.error
+    Instead: response.response.data.error
+
+*/
+
+
         // So, instead of inline here generating the direct dispatch of an action, we will instead call an Action Creator (authError), right from here inside (this) Action Creator (signinUser)
-        dispatch(authError('Bad SIGNING UP info'));
+
+        // dispatch(authError('Bad SIGNING UP info'));
+        // dispatch(authError(response.data.error)); // << Nope.
+        /* bundle.js:39200 Uncaught (in promise) TypeError: Cannot read property 'error' of undefined(…)
+        Response:
+        {"error":"Email is already in use!"}
+        Let's remove that '.data.' ...
+        */
+        // console.log("WR__ Yet Another 444 Sign UP ACTION response: ", response);
+        // console.log("WR__ Yet Another 555 Sign UP ACTION response.error: ", response.error);
+        // console.log("WR__ Yet Another 666 Sign UP ACTION response.data.error: ", response.data.error);
+        // dispatch(authError(response.error)); // Yes, but ...
+        // console.log("WR__ Yet Another 888 Sign UP ACTION response.response.data.error: ", response.response.data.error);
+
+        // lilInspector(response, 'that response thing');
+        lilInspector(error, 'that error thing');
+        // lilInspector(response.response, 'that response thing response.response');
+        lilInspector(error.response, 'that response thing error.response');
+        /*
+
+ **** !!!! lilInspector !!!! ****
+bundle.js:41158 objectVariableNameThisTime : that response thing
+bundle.js:41165 KEY   : lilKey            : config
+bundle.js:41166 VALUE : lilObject[lilKey] : [object Object]
+bundle.js:41165 KEY   : lilKey            : response
+bundle.js:41166 VALUE : lilObject[lilKey] : [object Object]
+bundle.js:41171 **** !!!! /END lilInspector !!!! ****
+
+Not:              response.data.error
+Instead: response.response.data.error
+OR:         error.response.data.error
+
+response: {
+  config: { ... },
+  response: { ... },
+}
+
+// appears to be SAME THING:
+error: {
+  config: { ... },
+  response: { ... },
+}
+
+response: {
+  config: { ... },
+  response: {
+    data: { ... },
+    status: 422,
+    statusText: 'Unprocessable Entity',
+    headers: { ... },
+    config: { ... },
+    request: { ... }
+  }
+}
+
+response: {
+error: {
+  config: { ... },
+  response: {
+    data: {
+      error: 'Email is in use',
+      ...
+    },
+    status: 422,
+    statusText: 'Unprocessable Entity',
+    headers: { ... },
+    ...
+  }
+}
+
+
+
+
+        */
+
+        /*
+**** !!!! lilInspector !!!! ****
+bundle.js:41169 objectVariableNameThisTime : that response thing response.response
+bundle.js:41176 KEY   : lilKey            : data
+bundle.js:41177 VALUE : lilObject[lilKey] : [object Object]
+bundle.js:41176 KEY   : lilKey            : status
+bundle.js:41177 VALUE : lilObject[lilKey] : 422
+bundle.js:41176 KEY   : lilKey            : statusText
+bundle.js:41177 VALUE : lilObject[lilKey] : Unprocessable Entity
+bundle.js:41176 KEY   : lilKey            : headers
+bundle.js:41177 VALUE : lilObject[lilKey] : [object Object]
+bundle.js:41176 KEY   : lilKey            : config
+bundle.js:41177 VALUE : lilObject[lilKey] : [object Object]
+bundle.js:41176 KEY   : lilKey            : request
+bundle.js:41177 VALUE : lilObject[lilKey] : [object XMLHttpRequest]
+bundle.js:41182 **** !!!! /END lilInspector !!!! ****
+        */
+// https://www.udemy.com/react-redux-tutorial/learn/v4/questions/1521726
+        // dispatch(authError(response.response.data.error)); // try it?  YEP THAT IS IT
+        dispatch(authError(error.response.data.error)); // try it?  YEP THAT IS IT
+        // APPARENTLY 'RESPONSE' GETS WRAPPED IN ANOTHER OUTER 'RESONSE'  All righty.
+
+/* try it = hah!
+Whatever the hell this 'response' is, I don't know where it is hiding the error I sent with it. Hmmph.
+
+Time for the lilInspector()!
+
+bundle.js:901 Uncaught (in promise) Error: Objects are not valid as a React child (found: Error: Request failed with status code 422). If you meant to render a collection of children, use an array instead or wrap the object using createFragment(object) from the React add-ons. Check the render method of `Signup`.(…)
+*/
+
+
+
+        // the authError isn't getting the text ... hmm.
+        /*
+WR__ Yet Another 444 Sign UP ACTION response:  Error: Request failed with status code 422(…)
+bundle.js:39207 WR__ Yet Another 555 Sign UP ACTION response.error:  undefined
+
+the '666' one can't be run: no 'response.data ...'
+bundle.js:39208 Uncaught (in promise) TypeError: Cannot read property 'error' of undefined(…)
+
+From my auth server API:
+../../../04-auth-server/auth/server/controllers/authentication.js:
+----------
+{"error":"Email is already in use!"}
+
+  return res.status(422).send( {
+        error: "Email is already in use!"
+      });
+        */
+
       });
   }
 }
