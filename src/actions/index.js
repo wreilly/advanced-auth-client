@@ -193,7 +193,8 @@ localStorage.getItem('token')
       // .catch( () => {
 // https://www.udemy.com/react-redux-tutorial/learn/v4/questions/1521726
       // .catch( (response) => {
-      .catch( (error) => {
+      // .catch( (error) => {
+      .catch( (foobar) => {
 
 
         // 3. If *not* okay
@@ -232,10 +233,12 @@ what this response looks like coming from the SERVER:
         // dispatch(authError(response.error)); // Yes, but ...
         // console.log("WR__ Yet Another 888 Sign UP ACTION response.response.data.error: ", response.response.data.error);
 
+        lilInspector(foobar, 'that foobar thing');
         // lilInspector(response, 'that response thing');
-        lilInspector(error, 'that error thing');
+        // lilInspector(error, 'that error thing');
         // lilInspector(response.response, 'that response thing response.response');
-        lilInspector(error.response, 'that response thing error.response');
+        // lilInspector(error.response, 'that response thing error.response');
+        lilInspector(foobar.response, 'that foobar thing foobar.response');
         /*
 
  **** !!!! lilInspector !!!! ****
@@ -312,7 +315,8 @@ bundle.js:41182 **** !!!! /END lilInspector !!!! ****
         */
 // https://www.udemy.com/react-redux-tutorial/learn/v4/questions/1521726
         // dispatch(authError(response.response.data.error)); // try it?  YEP THAT IS IT
-        dispatch(authError(error.response.data.error)); // try it?  YEP THAT IS IT
+        // dispatch(authError(error.response.data.error));
+        dispatch(authError(foobar.response.data.error)); // try it?  YEP THAT IS IT
         // APPARENTLY 'RESPONSE' GETS WRAPPED IN ANOTHER OUTER 'RESONSE'  All righty.
 
 /* try it = hah!
