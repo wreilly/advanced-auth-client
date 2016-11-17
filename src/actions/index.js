@@ -6,7 +6,8 @@ import { browserHistory } from 'react-router';
 import {
   AUTH_USER,
   UNAUTH_USER,
-  AUTH_ERROR
+  AUTH_ERROR,
+  FETCH_MESSAGE
 } from './types';
 
 import lilInspector from '../lilInspector';
@@ -349,4 +350,121 @@ From my auth server API:
 
       });
   }
-}
+} //  /signupUser()
+// &&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&&
+
+
+
+
+
+
+// ***** ACTION CREATOR
+export function fetchMessage() {
+  // redux THUNK - we're returning a FUNCTION from this Action Generator:
+
+// TO SEND TOKEN IT IS IN HEADERS
+
+  return function(dispatch) {
+    axios.get(ROOT_API_URL, {
+        headers: {
+          authorization: localStorage.getItem('token')
+        }
+      })  // hitting API '/'
+      .then(response => {
+        // Bummer. Not getting anything logged. Hmm.
+        // Hmm. Now that I also trigger (below) a dispatch, I *DO* get this console.log to work. Odd ?
+        // And now, I temporarily remove the dispatch, retain the console.log, and it does work. wtf.
+        console.log("WR__ 8889 fetchMessage() API '/' response: ", response);
+
+
+        dispatch({
+          type: FETCH_MESSAGE,
+          // payload: action.payload.data.message // ?? << error by instructor in video. The course source code has correct:
+          payload: response.data.message
+        });
+
+      });
+  }
+} //  /fetchMessage()   USING THUNK
+
+
+/*
+&&&&&&&&&&&&&&&&&
+LECTURE 116
+MAKING AUTHENTICATED API REQUESTS
+We'll use Redux Thunk here.
+You could use Redux Promise. (but it is less secure!)
+*/
+/*
+SERVER: /ROUTER.JS
+  app.get('/', requireAuth, function(req, res) {
+    res.send( { message: 'Super-duper secret code is (if you must know) ABC123f'});
+  });
+*/
+
+/*
+bundle.js:39408 Uncaught (in promise) ReferenceError: action is not defined(…)
+
+
+
+WR__ 888 fetchMessage() API '/'
+response:  Object
+  data: Object
+    message: "Super-duper secret code is (if you must know) ABC123f"
+*/
+
+
+/* ******** REDUX *PROMISE*  ********* */
+// Hmm, this is NOT working. 2016-11-17-0808AM oh well.
+// LESS SECURE! ?? ?? ??
+// export function fetchMessagePromise() {
+
+/* *****************************
+  //   NOT working. 2016-11-17-0808AM
+export function fetchMessage() {
+  const request = axios.get(ROOT_API_URL, {
+    headers: { authorization: localStorage.getItem('token') }
+  });
+
+console.log("WR__ 9777 fetchMessagePROMISE() API '/' request: ", request);
+// console.log("WR__ 9777A fetchMessagePROMISE() API '/' request: ", request.data);
+// console.log("WR__ 9777B fetchMessagePROMISE() API '/' request: ", request.data.message);
+
+  return {
+    type: FETCH_MESSAGE,
+    payload: request
+  }
+} *******************************
+*/
+
+
+/*
+WR__ 9777 fetchMessagePROMISE() API '/' request:
+request:
+Promise__proto__:
+Promise[[PromiseStatus]]: "resolved"
+[[PromiseValue]]: Object
+  config: Object
+  data: Object
+    message: "Super-duper secret code is (if you must know) ABC123f"
+
+
+
+
+
+
+
+
+WR__ 7777 Feature mapStateToProps
+state:  Object
+  auth: Object
+    authenticated: true
+    error: "Bad login info"
+    message: Promise__proto__:
+        Promise[[PromiseStatus]]: "resolved"
+        [[PromiseValue]]: Object
+          config: Object
+          data: Object
+            message: "Super-duper secret code is (if you must know) ABC123f"
+*/
+/* ******** /REDUX *PROMISE*  ********* */

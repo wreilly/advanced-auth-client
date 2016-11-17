@@ -17,19 +17,19 @@ class Header extends Component {
   // T/F
   // renderLinks() { }
   helperShowRightLinks () {
-      console.log("WR__ H 99 did we get here at all at all this.props.wr__auth ", this.props.wr__auth);
-      console.log("WR__ H 100 did we get here at all at all this.props.wr__auth.wr__error ", this.props.wr__auth.wr__error);
-      console.log("WR__ H 101 did we get here at all at all this.props.wr__auth.wr__authenticated ", this.props.wr__auth.wr__authenticated);
+      // console.log("WR__ H 99 did we get here at all at all this.props.wr__auth ", this.props.wr__auth);
+      // console.log("WR__ H 100 did we get here at all at all this.props.wr__auth.wr__error ", this.props.wr__auth.wr__error);
+      // console.log("WR__ H 101 did we get here at all at all this.props.wr__auth.wr__authenticated ", this.props.wr__auth.wr__authenticated);
 
     // NEW TEST: ! BANG on whether authenticated T/F, not wr__error (text or empty)
     // if (!this.props.authenticated) { // wrong
     if (!this.props.wr__auth.wr__authenticated) {
       // Nope. You are NOT authenticated, friend.
-      console.log("WR__ H 98B NOPE did we get here at all at all this.props.wr__auth.wr__authenticated ", this.props.wr__auth.wr__authenticated);
+      // console.log("WR__ H 98B NOPE did we get here at all at all this.props.wr__auth.wr__authenticated ", this.props.wr__auth.wr__authenticated);
 
     // if (this.props.wr__authenticated.wr__error) {
       // Nope, you got an error. Gotta authenticate
-      console.log("WR__ H 982-PART-1 NOPE did we get here at all at all this.props.wr__auth.wr__error ", this.props.wr__auth.wr__error);
+      // console.log("WR__ H 982-PART-1 NOPE did we get here at all at all this.props.wr__auth.wr__error ", this.props.wr__auth.wr__error);
 
 // REACT TRICK
 // return ARRAY.
@@ -53,8 +53,8 @@ REACT thinks it's an array of Components.
     } else {
       // NEW TEST (above). Authenticated? Yep...
       // No error? Yep, let 'em in
-      console.log("WR__ H 97 YEP did we get here at all at all this.props.wr__auth.wr__error ", this.props.wr__auth.wr__error);
-      console.log("WR__ H 96 YEP did we get here at all at all this.props.wr__auth.wr__authenticated ", this.props.wr__auth.wr__authenticated);
+      // console.log("WR__ H 97 YEP did we get here at all at all this.props.wr__auth.wr__error ", this.props.wr__auth.wr__error);
+      // console.log("WR__ H 96 YEP did we get here at all at all this.props.wr__auth.wr__authenticated ", this.props.wr__auth.wr__authenticated);
 
       return (
           <li className="nav-item">
@@ -78,7 +78,7 @@ REACT thinks it's an array of Components.
 function mapStateToProps(state) {
   // T/F
   console.log("WR__ H 87 that map thing state: ", state);
-  console.log("WR__ H 88 that map thing state.auth: ", state.auth);
+  // console.log("WR__ H 88 that map thing state.auth: ", state.auth);
   /* state.auth is empty Object {} *UNTIL* I try a login that fails.
   THEN we get an .error property, w. text message.
   okay.

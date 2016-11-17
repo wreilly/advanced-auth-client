@@ -153,8 +153,8 @@ renderField (
 
 
 function mapStateToProps(state) {
-  console.log("WR__ SI 87 that map thing state: ", state);
-  console.log("WR__ SI 88 that map thing state.auth: ", state.auth);
+  // console.log("WR__ SI 87 that map thing state: ", state);
+  // console.log("WR__ SI 88 that map thing state.auth: ", state.auth);
 
   return { errorMessage: state.auth.error };
 }

@@ -12,14 +12,38 @@ import Signup from './components/auth/signup';
 import Signout from './components/auth/signout';
 import Feature from './components/feature';
 import RequireAuth from './components/auth/require_authentication';
+import Welcome from './components/welcome';
 import reducers from './reducers';
+import { AUTH_USER } from './actions/types';
 
 const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
 
-ReactDOM.render(
+/* WAS:
   <Provider store={createStoreWithMiddleware(reducers)}>
+  NOW: (see below)
+    <Provider store={store}>
+*/
+// NEW: create reduxStore AHEAD OF TIME
+// BEFORE all that RENDERING going on below
+// That way we can Check whether we have a Token!
+const store = createStoreWithMiddleware(reducers);
+const token = localStorage.getItem('token');
+// IF THERE'S A TOKEN, USER IS LOGGED IN! :o)
+if (token) {
+  // we need to update application state
+  // can we modify state directly? NO !!
+  // Instead we dispatch an action to do so
+  // dispatch is a method on the store !
+  // This will send our action to all our reducers
+  store.dispatch( { type: AUTH_USER } );
+  // Changes authenticated from false to true
+}
+
+ReactDOM.render(
+  <Provider store={store}>
     <Router history={browserHistory} >
       <Route path="/" component={App}>
+        <IndexRoute component={Welcome} />
         <Route path="signin" component={Signin}>
         </Route>
         <Route path="signup" component={Signup}>
