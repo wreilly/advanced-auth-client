@@ -28,15 +28,24 @@ function mapStateToProps(state) {
   // THUNK: (works)
   // return { message: state.auth.message };
 
-  // PROMISE:  ?
+  // PROMISE:  (Works Holy Cow)(why? because reducer is now correct)
+  return { message: state.auth.message }; // Can't beat 'em, join 'em. (same as THUNK)
+
+  // PROMISE:  ? FAILED
   // return { message: state.auth.message.data.message }; // ? This is what is seen AFTER "resolved". But, NOT when just "pending". Ergo: No, nope, sorry. bummer.
-  // PROMISE:  ?
-  return { message: state.auth.message }; // ? Can't beat 'em, join 'em. ? (same as THUNK) << Nope.
-  // PROMISE:  ?
+
+  // PROMISE:  ? FAILED. (why? because reducer was WRONG!)
+  // return { message: state.auth.message }; // ? Can't beat 'em, join 'em. ? (same as THUNK) << Nope.
+
+  // PROMISE:  ? FAILED
   // return { message: state.message }; // Hmm. Idea from auth_reducer ... ? // No. sad.
-  // PROMISE:  (not woikin'!)
-  // return { message: state.auth.message.data.message }; // << NO   ?
-  // return { message: state.auth.response.data }; // << NO  ?
+
+  // PROMISE:  (not woikin'!) FAILED
+  // return { message: state.auth.message.data.message }; // << NO
+
+  // PROMISE:  ? FAILED
+  // return { message: state.auth.response.data }; // << NO  
+
   // return { message: '7777 plain text promise testing' }; // Yeah plain text works.
 }
 

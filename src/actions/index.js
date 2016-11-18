@@ -357,7 +357,7 @@ From my auth server API:
 
 
 
-/* ******** REDUX *THUNK*  ********* */
+/* ******** REDUX *THUNK* << THIS WORKS ********* */
 // ***** ACTION CREATOR
 /* **********************************
 export function fetchMessage() {
@@ -426,7 +426,7 @@ response:  Object
 
 /* ******** REDUX *PROMISE*  ********* */
 // Hmm, this is NOT working. 2016-11-17-0808AM oh well.
-// LESS SECURE! ?? ?? ??
+// LESS SECURE! ?? ?? ??<< Not sure that's what he said. Hmm.
 // export function fetchMessagePromise() {
 
 /* *****************************
@@ -438,7 +438,7 @@ export function fetchMessage() {
   });
 
 console.log("WR__ 9777 fetchMessagePROMISE() API '/' request: ", request);
-console.log("WR__ 9777A fetchMessagePROMISE() API '/' request.data: ", request.data);
+// console.log("WR__ 9777A fetchMessagePROMISE() API '/' request.data: ", request.data); // undefined. sorry. too early!
 // console.log("WR__ 9777B fetchMessagePROMISE() API '/' request.data.message: ", request.data.message);
 
   return {

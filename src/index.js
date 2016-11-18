@@ -5,8 +5,9 @@ import { createStore, applyMiddleware } from 'redux';
 
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import reduxThunk from 'redux-thunk';
+
 // https://www.udemy.com/react-redux-tutorial/learn/v4/questions/1371882
-/*  HMM
+/*  HMM << I fixed this later ...
 bundle.js:21664 mapStateToProps() in Connect(Feature) must return a plain object. Instead received undefined.
 */
 import reduxPromise from 'redux-promise';
