@@ -12,6 +12,12 @@ bundle.js:21664 mapStateToProps() in Connect(Feature) must return a plain object
 */
 import reduxPromise from 'redux-promise';
 
+/*
+TRYING THE HOME-ROLLED GROWN YER OWN: YAH. WORKED.
+/Users/william.reilly/dev/JavaScript/React/Udemy-ADVANCED-React-Redux-Grider/03-middleware/advanced-middlewares/src/middlewares/async.js
+*/
+import Async from './middlewares/async';
+
 import App from './components/app';
 import Signin from './components/auth/signin';
 import Signup from './components/auth/signup';
@@ -23,7 +29,9 @@ import reducers from './reducers';
 import { AUTH_USER } from './actions/types';
 
 // https://www.udemy.com/react-redux-tutorial/learn/v4/questions/1371882
-const createStoreWithMiddleware = applyMiddleware(reduxThunk, reduxPromise)(createStore);
+// const createStoreWithMiddleware = applyMiddleware(reduxThunk, reduxPromise)(createStore);
+// GROWN YER OWN:
+const createStoreWithMiddleware = applyMiddleware(reduxThunk, Async)(createStore);
 
 /* WAS:
   <Provider store={createStoreWithMiddleware(reducers)}>
