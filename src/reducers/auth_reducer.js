@@ -24,7 +24,17 @@ export default function(state = { ...state, authenticated: false}, action) {
     case AUTH_ERROR:
       return { ...state, error: action.payload };
     case FETCH_MESSAGE:
-      return { ...state, message: action.payload };
+
+
+// MIDDLEWARES Section
+// from /reducers/users.js
+// LECTURE 57, 58 HANDLING PROMISES
+      console.log("WR__ 11111 reducers/auth_reducer, FETCH_MESSAGE - what we got back from the Action's axios call to the auth API! action.payload.data: ", action.payload.data);
+
+
+      // return { ...state, message: action.payload };
+      // return { ...state, message: action.payload.data };
+      return { ...state, message: action.payload.data.message };
   }
   // default
   return state;

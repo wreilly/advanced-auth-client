@@ -357,8 +357,9 @@ From my auth server API:
 
 
 
-
+/* ******** REDUX *THUNK*  ********* */
 // ***** ACTION CREATOR
+/* **********************************
 export function fetchMessage() {
   // redux THUNK - we're returning a FUNCTION from this Action Generator:
 
@@ -376,6 +377,10 @@ export function fetchMessage() {
         // And now, I temporarily remove the dispatch, retain the console.log, and it does work. wtf.
         console.log("WR__ 8889 fetchMessage() API '/' response: ", response);
 
+// WR__ 8889 fetchMessage() API '/' response:  Object
+	// config: Object
+	// data: Object
+	// 	message: "Super-duper secret code is (if you must know) ABC123f"
 
         dispatch({
           type: FETCH_MESSAGE,
@@ -386,6 +391,11 @@ export function fetchMessage() {
       });
   }
 } //  /fetchMessage()   USING THUNK
+     **********************************
+*/
+/* ******** /REDUX *THUNK*  ********* */
+
+
 
 
 /*
@@ -421,20 +431,22 @@ response:  Object
 
 /* *****************************
   //   NOT working. 2016-11-17-0808AM
+*/
 export function fetchMessage() {
   const request = axios.get(ROOT_API_URL, {
     headers: { authorization: localStorage.getItem('token') }
   });
 
 console.log("WR__ 9777 fetchMessagePROMISE() API '/' request: ", request);
-// console.log("WR__ 9777A fetchMessagePROMISE() API '/' request: ", request.data);
-// console.log("WR__ 9777B fetchMessagePROMISE() API '/' request: ", request.data.message);
+console.log("WR__ 9777A fetchMessagePROMISE() API '/' request.data: ", request.data);
+// console.log("WR__ 9777B fetchMessagePROMISE() API '/' request.data.message: ", request.data.message);
 
   return {
     type: FETCH_MESSAGE,
     payload: request
   }
-} *******************************
+}
+/* *******************************
 */
 
 

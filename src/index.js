@@ -5,6 +5,11 @@ import { createStore, applyMiddleware } from 'redux';
 
 import { Router, Route, IndexRoute, browserHistory } from 'react-router';
 import reduxThunk from 'redux-thunk';
+// https://www.udemy.com/react-redux-tutorial/learn/v4/questions/1371882
+/*  HMM
+bundle.js:21664 mapStateToProps() in Connect(Feature) must return a plain object. Instead received undefined.
+*/
+import reduxPromise from 'redux-promise';
 
 import App from './components/app';
 import Signin from './components/auth/signin';
@@ -16,7 +21,8 @@ import Welcome from './components/welcome';
 import reducers from './reducers';
 import { AUTH_USER } from './actions/types';
 
-const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
+// https://www.udemy.com/react-redux-tutorial/learn/v4/questions/1371882
+const createStoreWithMiddleware = applyMiddleware(reduxThunk, reduxPromise)(createStore);
 
 /* WAS:
   <Provider store={createStoreWithMiddleware(reducers)}>

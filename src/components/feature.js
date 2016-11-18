@@ -18,14 +18,26 @@ class Feature extends Component {
 }
 
 // Thus far, no mapStateToProps, ergo: null.
+
 // Okay, now time to get that message, off state, to props, to show message to page ?? ??
 // Ah - I hadn't yet done the AUTH_REDUCER part for FETCH_MESSAGE. okay.
 // Note that this 'message', not really part of 'auth', does get added to the 'auth' part of state.
 // Why? Because we a bit lazily plopped 'message' into the same auth_reducer, instead of making a whole other reducer, just to handle this one little case, here at the tail end of the course. Cheers.
 function mapStateToProps(state) {
   console.log("WR__ 7777 Feature mapStateToProps state: ", state);
-  return { message: state.auth.message }; // THUNK
-  // return { message: state.auth.message.data.message }; // PROMISE
+  // THUNK: (works)
+  // return { message: state.auth.message };
+
+  // PROMISE:  ?
+  // return { message: state.auth.message.data.message }; // ? This is what is seen AFTER "resolved". But, NOT when just "pending". Ergo: No, nope, sorry. bummer.
+  // PROMISE:  ?
+  return { message: state.auth.message }; // ? Can't beat 'em, join 'em. ? (same as THUNK) << Nope.
+  // PROMISE:  ?
+  // return { message: state.message }; // Hmm. Idea from auth_reducer ... ? // No. sad.
+  // PROMISE:  (not woikin'!)
+  // return { message: state.auth.message.data.message }; // << NO   ?
+  // return { message: state.auth.response.data }; // << NO  ?
+  // return { message: '7777 plain text promise testing' }; // Yeah plain text works.
 }
 
 // export default connect(null, actions)(Feature);
