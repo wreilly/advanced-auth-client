@@ -2,6 +2,9 @@
 COPIED FROM
 /Users/william.reilly/dev/JavaScript/React/Udemy-ADVANCED-React-Redux-Grider/03-middleware/advanced-middlewares/src/middlewares/async.js
 */
+// (See THE SKINNY: at the BOTTOM)
+
+
 
 // we'll be pulling off only the dispatch function, so, that's all we export:
 /* Nifty ES6 style */
@@ -101,6 +104,22 @@ export default function( { dispatch } ) {
 
     next(action);
     };
+  };
+}
+*/
+
+/*
+THE SKINNY:
+export default function( { dispatch } ) {
+  return next => action => {
+    if (!action.payload || !action.payload.then) {
+      return next(action);
+    }
+    action.payload
+      .then(function(response) {
+        const newAction = { ...action, payload: response }
+        dispatch(newAction);
+      });
   };
 }
 */

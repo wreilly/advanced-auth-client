@@ -83,9 +83,9 @@ export default function(ComposedComponent) {
 
 
   function mapStateToProps(state) {
-    // WAS in section 02:
+    // WAS: in course section 02: (Middlewares) state structure:
     // return { authenticated: state.authenticated };
-    // IN USE HERE section 05: we have an extra 'auth' organizing our state structure:
+    // IN USE HERE section 05: (Client Auth) we have an extra 'auth' organizing our state structure:
     return { authenticated: state.auth.authenticated };
   }
 

@@ -431,6 +431,7 @@ response:  Object
 
 /* *****************************
   //   NOT working. 2016-11-17-0808AM
+  //   Finalfrickingly working. 2016-11-18-early-morning
 */
 export function fetchMessage() {
   const request = axios.get(ROOT_API_URL, {
@@ -438,6 +439,7 @@ export function fetchMessage() {
   });
 
 console.log("WR__ 9777 fetchMessagePROMISE() API '/' request: ", request);
+console.log("WR__ 9777AAA then??? fetchMessagePROMISE() API '/' request.then: ", request.then);
 // console.log("WR__ 9777A fetchMessagePROMISE() API '/' request.data: ", request.data); // undefined. sorry. too early!
 // console.log("WR__ 9777B fetchMessagePROMISE() API '/' request.data.message: ", request.data.message);
 
@@ -446,7 +448,7 @@ console.log("WR__ 9777 fetchMessagePROMISE() API '/' request: ", request);
     payload: request
   }
 }
-/* *******************************
+/* ****** /REDUX *PROMISE* *************************
 */
 
 
