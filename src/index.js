@@ -29,7 +29,10 @@ import reducers from './reducers';
 import { AUTH_USER } from './actions/types';
 
 // https://www.udemy.com/react-redux-tutorial/learn/v4/questions/1371882
-const createStoreWithMiddleware = applyMiddleware(reduxThunk, reduxPromise)(createStore);
+// REDUX-THUNK *ONLY* (NO "PROMISE" MIDDLEWARE)
+const createStoreWithMiddleware = applyMiddleware(reduxThunk)(createStore);
+// REDUX-PROMISE
+// const createStoreWithMiddleware = applyMiddleware(reduxThunk, reduxPromise)(createStore);
 // GROWN YER OWN:
 // const createStoreWithMiddleware = applyMiddleware(reduxThunk, Async)(createStore);
 
