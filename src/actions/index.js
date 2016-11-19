@@ -359,7 +359,7 @@ From my auth server API:
 
 /* ******** REDUX *THUNK* << THIS WORKS ********* */
 // ***** ACTION CREATOR
-/* **********************************
+/* ********************************** */
 export function fetchMessage() {
   // redux THUNK - we're returning a FUNCTION from this Action Generator:
 
@@ -385,13 +385,21 @@ export function fetchMessage() {
         dispatch({
           type: FETCH_MESSAGE,
           // payload: action.payload.data.message // ?? << error by instructor in video. The course source code has correct:
-          payload: response.data.message
+
+          // payload: response.data.message
+          /*
+          Q. Why comment out above line? (Which had been working ...)
+          A. To make this THUNK payload be the same as the PROMISE payload.
+          That way, our Auth Reducer can work with both, unchanged:
+                return { ...state, message: action.payload.data.message };
+          */
+          payload: response
         });
 
       });
   }
 } //  /fetchMessage()   USING THUNK
-     **********************************
+/*     **********************************
 */
 /* ******** /REDUX *THUNK*  ********* */
 
@@ -433,6 +441,9 @@ response:  Object
   //   NOT working. 2016-11-17-0808AM
   //   Finalfrickingly working. 2016-11-18-early-morning
 */
+
+/* ************ COMMENTING OUT ***********
+   ************ TO USE THUNK INSTEAD *****
 export function fetchMessage() {
   const request = axios.get(ROOT_API_URL, {
     headers: { authorization: localStorage.getItem('token') }
@@ -448,6 +459,9 @@ console.log("WR__ 9777AAA then??? fetchMessagePROMISE() API '/' request.then: ",
     payload: request
   }
 }
+/* ************ /COMMENTING OUT ***********
+   ************ /TO USE THUNK INSTEAD *****
+*/
 /* ****** /REDUX *PROMISE* *************************
 */
 
